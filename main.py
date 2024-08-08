@@ -29,7 +29,7 @@ dataset = Dataset.from_pandas(pd.DataFrame(dataset))
 
 # %%
 # Set model
-MODEL_NAME = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 # %%
 # Load tokenizer
@@ -70,10 +70,13 @@ model = AutoModelForCausalLM.from_pretrained(
     # load_in_4bit=True,
 )
 
+import copy
+ref_model = copy.deepcopy(model)
+
 # Create the standard DPO Trainer
 trainer = DPOTrainer(
     model=model,
-    # ref_model
+    ref_model=ref_model,
     args=dpo_config,
     train_dataset=dataset,
     tokenizer=tokenizer,
